@@ -58,7 +58,7 @@ const SignIn = () => {
           }}
         >
           <Image
-            source={images.logo} // Assuming logo is set in constants
+             source={require("../../assets/farmer.webp")} // Assuming logo is set in constants
             resizeMode="contain"
             style={{ width: 150, height: 150, marginBottom: 20 }}
           />

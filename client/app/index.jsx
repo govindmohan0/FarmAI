@@ -35,7 +35,7 @@ const Welcome = () => {
           
           {/* Correct Image Usage */}
           <Image
-            source={require("C:/Users/hkanv/Documents/GitHub/web-dev-prectice/client/asdssa.jpg")} // Update the image path accordingly
+            source={require("C:/Users/hkanv/Documents/GitHub/web-dev-prectice/client/assets/asdssa.jpg")} // Update the image path accordingly
             className="w-full h-[300px]"
             resizeMode="contain"
             
