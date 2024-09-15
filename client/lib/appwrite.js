@@ -18,7 +18,9 @@ export const appwriteConfig = {
   imageCollectionId: "66e4912e002fa85fbb26",
 };
 
-const client = new Client()
+const client = new Client();
+
+client
   .setEndpoint(appwriteConfig.endpoint)
   .setProject(appwriteConfig.projectId)
   .setPlatform(appwriteConfig.platform);
@@ -38,7 +40,7 @@ export async function createUser(email, password, username) {
       username
     );
 
-    if (!newAccount) throw new Error("Account creation failed");
+    if (!newAccount) throw Error;
 
     const avatarUrl = avatars.getInitials(username);
 
@@ -58,8 +60,7 @@ export async function createUser(email, password, username) {
 
     return newUser;
   } catch (error) {
-    console.error("Create User Error:", error);
-    throw new Error("User creation failed");
+    throw new Error(error);
   }
 }
 
@@ -67,11 +68,10 @@ export async function createUser(email, password, username) {
 export async function signIn(email, password) {
   try {
     const session = await account.createEmailSession(email, password);
-    if (!session) throw new Error("Session creation failed");
+
     return session;
   } catch (error) {
-    console.error("Sign In Error:", error);
-    throw new Error("Sign In failed");
+    throw new Error(error);
   }
 }
 
@@ -79,10 +79,10 @@ export async function signIn(email, password) {
 export async function getAccount() {
   try {
     const currentAccount = await account.get();
+
     return currentAccount;
   } catch (error) {
-    console.error("Get Account Error:", error);
-    throw new Error("Failed to get account");
+    throw new Error(error);
   }
 }
 
@@ -90,7 +90,7 @@ export async function getAccount() {
 export async function getCurrentUser() {
   try {
     const currentAccount = await getAccount();
-    if (!currentAccount) throw new Error("No current account");
+    if (!currentAccount) throw Error;
 
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
@@ -98,12 +98,11 @@ export async function getCurrentUser() {
       [Query.equal("accountId", currentAccount.$id)]
     );
 
-    if (!currentUser || currentUser.documents.length === 0)
-      throw new Error("User not found");
+    if (!currentUser) throw Error;
 
     return currentUser.documents[0];
   } catch (error) {
-    console.error("Get Current User Error:", error);
+    console.log(error);
     return null;
   }
 }
@@ -111,64 +110,59 @@ export async function getCurrentUser() {
 // Sign Out
 export async function signOut() {
   try {
-    await account.deleteSession("current");
+    const session = await account.deleteSession("current");
+
+    return session;
   } catch (error) {
-    console.error("Sign Out Error:", error);
-    throw new Error("Sign Out failed");
+    throw new Error(error);
   }
 }
 
-// Upload File
-export async function uploadFile(file, type) {
+// Upload File (Image only)
+export async function uploadFile(file) {
   if (!file) return;
 
-  try {
-    // Fetch the file using the URI and convert it into a blob
-    const response = await fetch(file.uri);
-    const blob = await response.blob();
+  const { mimeType, ...rest } = file;
+  const asset = { type: mimeType, ...rest };
 
+  try {
     const uploadedFile = await storage.createFile(
       appwriteConfig.storageId,
       ID.unique(),
-      blob
+      asset
     );
 
-    const fileUrl = await getFilePreview(uploadedFile.$id, type);
+    const fileUrl = await getFilePreview(uploadedFile.$id);
     return fileUrl;
   } catch (error) {
-    console.error("Upload File Error:", error);
-    throw new Error("File upload failed");
+    throw new Error(error);
   }
 }
 
-// Get File Preview
-export async function getFilePreview(fileId, type) {
+// Get File Preview (Image)
+export async function getFilePreview(fileId) {
   try {
-    let fileUrl;
-    if (type === "image") {
-      fileUrl = await storage.getFilePreview(
-        appwriteConfig.storageId,
-        fileId,
-        2000,
-        2000,
-        "top",
-        100
-      );
-    } else {
-      throw new Error("Invalid file type");
-    }
+    const fileUrl = storage.getFilePreview(
+      appwriteConfig.storageId,
+      fileId,
+      2000,
+      2000,
+      "top",
+      100
+    );
+
+    if (!fileUrl) throw Error;
 
     return fileUrl;
   } catch (error) {
-    console.error("Get File Preview Error:", error);
-    throw new Error("Failed to get file preview");
+    throw new Error(error);
   }
 }
 
 // Create Image Post
 export async function createImagePost(form) {
   try {
-    const imageUrl = await uploadFile(form.image, "image");
+    const imageUrl = await uploadFile(form.image);
 
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -184,22 +178,21 @@ export async function createImagePost(form) {
 
     return newPost;
   } catch (error) {
-    console.error("Create Image Post Error:", error);
-    throw new Error("Failed to create image post");
+    throw new Error(error);
   }
 }
 
-// Get all image Posts
+// Get all image posts
 export async function getAllPosts() {
   try {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.imageCollectionId
     );
+
     return posts.documents;
   } catch (error) {
-    console.error("Get All Posts Error:", error);
-    throw new Error("Failed to get posts");
+    throw new Error(error);
   }
 }
 
@@ -211,14 +204,14 @@ export async function getUserPosts(userId) {
       appwriteConfig.imageCollectionId,
       [Query.equal("creator", userId)]
     );
+
     return posts.documents;
   } catch (error) {
-    console.error("Get User Posts Error:", error);
-    throw new Error("Failed to get user posts");
+    throw new Error(error);
   }
 }
 
-// Get image posts that matches search query
+// Get image posts that match search query
 export async function searchPosts(query) {
   try {
     const posts = await databases.listDocuments(
@@ -227,12 +220,11 @@ export async function searchPosts(query) {
       [Query.search("title", query)]
     );
 
-    if (!posts) throw new Error("Search failed");
+    if (!posts) throw new Error("Something went wrong");
 
     return posts.documents;
   } catch (error) {
-    console.error("Search Posts Error:", error);
-    throw new Error("Failed to search posts");
+    throw new Error(error);
   }
 }
 
@@ -247,7 +239,6 @@ export async function getLatestPosts() {
 
     return posts.documents;
   } catch (error) {
-    console.error("Get Latest Posts Error:", error);
-    throw new Error("Failed to get latest posts");
+    throw new Error(error);
   }
 }
