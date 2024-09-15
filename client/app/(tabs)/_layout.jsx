@@ -16,7 +16,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
         className="w-6 h-6"
       />
       <Text
-        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
+        className={`${focused ? "font-psemibold" : "font-pregular"} text-s`}
         style={{ color: color }}
       >
         {name}
@@ -34,11 +34,11 @@ const TabLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#FFA001",
+          tabBarActiveTintColor: "#298B71",
           tabBarInactiveTintColor: "#CDCDE0",
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: "#161622",
+            backgroundColor: "#ffff",
             borderTopWidth: 1,
             borderTopColor: "#232533",
             height: 84,
@@ -63,13 +63,13 @@ const TabLayout = () => {
         <Tabs.Screen
           name="bookmark"
           options={{
-            title: "Bookmark",
+            title: "Ask AI",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.bookmark}
                 color={color}
-                name="About"
+                name="Ask Ai"
                 focused={focused}
               />
             ),
@@ -85,7 +85,7 @@ const TabLayout = () => {
               <TabIcon
                 icon={icons.plus}
                 color={color}
-                name="Help"
+                name="Post"
                 focused={focused}
               />
             ),
@@ -106,6 +106,7 @@ const TabLayout = () => {
             ),
           }}
         />
+        
       </Tabs>
 
       <Loader isLoading={loading} />

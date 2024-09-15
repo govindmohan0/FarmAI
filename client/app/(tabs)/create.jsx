@@ -84,29 +84,33 @@ const Create = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView className="px-4 my-6">
-        <Text className="text-2xl text-white font-psemibold">Upload Image</Text>
-
+        <Text className="text-2xl text-black font-psemibold mb-6">Upload Image</Text>
         <FormField
-          title="Image Title"
-          value={form.title}
-          placeholder="Give your image a catchy title..."
-          handleChangeText={(e) => setForm({ ...form, title: e })}
-          otherStyles="mt-10"
-        />
+
+        
+  title="Image Title"
+  className="text-black"  // This will be displayed in black
+  value={form.title}
+  placeholder="Give your image a catchy title..."
+  handleChangeText={(e) => setForm({ ...form, title: e })}
+  otherStyles={{ marginTop: 10 }}
+  color="black"  // Ensure the title text color is black
+/>
+
 
         <View className="mt-7 space-y-2">
-          <Text className="text-base text-gray-100 font-pmedium">
+          <Text className="text-base text-black font-pmedium">
             Upload Image
           </Text>
 
-          <TouchableOpacity onPress={openPicker}>
+          <TouchableOpacity onPress={openPicker} >
             {form.image ? (
               <Image
                 source={{ uri: form.image.uri }}
                 resizeMode="cover"
-                className="w-full h-64 rounded-2xl"
+                className="w-full h-64 rounded-2xl mb-7"
               />
             ) : (
               <View className="w-full h-40 px-4 bg-black-100 rounded-2xl border border-black-200 flex justify-center items-center">
@@ -122,14 +126,6 @@ const Create = () => {
             )}
           </TouchableOpacity>
         </View>
-
-        <FormField
-          title="AI Prompt"
-          value={form.prompt}
-          placeholder="The AI prompt for your image...."
-          handleChangeText={(e) => setForm({ ...form, prompt: e })}
-          otherStyles="mt-7"
-        />
 
         <CustomButton
           title="Submit & Publish"

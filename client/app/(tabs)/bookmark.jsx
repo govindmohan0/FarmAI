@@ -9,6 +9,7 @@ const Bookmark = () => {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
+  // Function to pick an image from the gallery
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -25,70 +26,76 @@ const Bookmark = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.assets[0].uri);  // Store the image URI
     }
   };
 
+  // Function to handle prediction using FastAPI
   const handlePredict = async () => {
     if (!image) {
       alert("Please upload an image first!");
       return;
     }
 
-    setLoading(true);
-    setPrediction(null);
-    setError(null);
+    setLoading(true);  // Show loading spinner while request is in progress
+    setPrediction(null);  // Clear any previous prediction
+    setError(null);  // Clear any previous errors
 
     try {
+      // Prepare the image file for uploading using FormData
       const formData = new FormData();
       formData.append("file", {
         uri: image,
-        name: "image.jpg",
-        type: "image/jpeg",
+        name: "image.jpg",  // Image file name
+        type: "image/jpeg",  // File type
       });
 
-      const response = await fetch("YOUR_FASTAPI_ENDPOINT", {
+      // Send POST request to the FastAPI server
+      const response = await fetch("http://127.0.0.1:8000/predict", {  // Update this URL to match your FastAPI endpoint
         method: "POST",
         body: formData,
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",  // Tell the server we're sending form data
         },
       });
 
-      const result = await response.json();
+      const result = await response.json();  // Parse the JSON response from the server
+
       if (response.ok) {
-        setPrediction(result);
+        setPrediction(result);  // Set the prediction result in state
       } else {
-        setError(result.message || "An error occurred");
+        setError(result.message || "An error occurred");  // Handle errors if response is not ok
       }
     } catch (err) {
-      setError("An error occurred while sending the request");
+      setError("An error occurred while sending the request");  // Handle fetch errors
     } finally {
-      setLoading(false);
+      setLoading(false);  // Hide the loading spinner
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black px-4 py-6">
-      <Text className="text-xl font-semibold text-gray-300 mb-2">Upload Image</Text>
+    <SafeAreaView className="flex-1 bg-white px-4 py-6">
+      <Text className="text-3xl font-semibold text-black mb-6">Upload Image</Text>
 
+      {/* Image Upload Section */}
       <TouchableOpacity
         onPress={pickImage}
-        className="border-2 border-dashed border-yellow-400 flex items-center justify-center h-48 mb-4 rounded-lg"
+        className="border-2 border-dashed border-gray-400 flex items-center justify-center h-48 mb-4 rounded-lg"
       >
         {image ? (
           <Image source={{ uri: image }} className="w-full h-full rounded-lg object-cover" />
         ) : (
           <View className="flex items-center justify-center">
-            <Text className="text-yellow-400">Click to upload</Text>
+            <Text className="text-gray-400">Click to upload</Text>
           </View>
         )}
       </TouchableOpacity>
 
+      {/* Predict Button */}
       <View className="mt-6">
         <TouchableOpacity
           onPress={handlePredict}
-          className="bg-green-600 py-4 px-5 rounded-lg"
+          className="bg-green-700 py-4 px-5 rounded-lg"
         >
           <Text className="text-white text-lg text-center">
             {loading ? <ActivityIndicator color="white" /> : "Predict"}
@@ -96,13 +103,15 @@ const Bookmark = () => {
         </TouchableOpacity>
       </View>
 
+      {/* Display Prediction Result */}
       {prediction && (
         <View className="mt-6">
-          <Text className="text-white text-lg">Prediction Result:</Text>
-          <Text className="text-gray-300 mt-2">{JSON.stringify(prediction)}</Text>
+          <Text className="text-black text-lg">Prediction Result:</Text>
+          <Text className="text-black mt-2">{JSON.stringify(prediction)}</Text>
         </View>
       )}
 
+      {/* Display Error */}
       {error && (
         <View className="mt-6">
           <Text className="text-red-500 text-lg">Error:</Text>
