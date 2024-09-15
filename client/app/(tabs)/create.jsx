@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { router } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
   Text,
   Alert,
+  Image,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from "react-native";
 
 import { icons } from "../../constants";
@@ -25,38 +25,28 @@ const Create = () => {
     prompt: "",
   });
 
-  // Request permissions for the Image Picker
-  const requestPermission = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission Denied",
-        "Permission to access media is required!"
-      );
-    }
-  };
-
-  // Open the image picker
-  const openPicker = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+  const openPicker = async (selectType) => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type:
+        selectType === "image" ? ["image/png", "image/jpg", "image/jpeg"] : [],
     });
 
     if (!result.canceled) {
-      setForm({
-        ...form,
-        image: result.assets[0],
-      });
+      if (selectType === "image") {
+        setForm({
+          ...form,
+          image: result.assets[0],
+        });
+      }
     } else {
-      Alert.alert("No image selected");
+      setTimeout(() => {
+        Alert.alert("Document picked", JSON.stringify(result, null, 2));
+      }, 100);
     }
   };
 
   const submit = async () => {
-    if (form.prompt === "" || form.title === "" || !form.image) {
+    if ((form.prompt === "") | (form.title === "") | !form.image) {
       return Alert.alert("Please provide all fields");
     }
 
@@ -65,10 +55,9 @@ const Create = () => {
       await createImagePost({
         ...form,
         userId: user.$id,
-        imageUrl: form.image.uri, // Assuming your backend requires an image URL
       });
 
-      Alert.alert("Success", "Image post uploaded successfully");
+      Alert.alert("Success", "Post uploaded successfully");
       router.push("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
@@ -101,11 +90,19 @@ const Create = () => {
 
 
         <View className="mt-7 space-y-2">
+<<<<<<< HEAD
           <Text className="text-base text-black font-pmedium">
             Upload Image
           </Text>
 
           <TouchableOpacity onPress={openPicker} >
+=======
+          <Text className="text-base text-gray-100 font-pmedium">
+            Thumbnail Image
+          </Text>
+
+          <TouchableOpacity onPress={() => openPicker("image")}>
+>>>>>>> 56d193f716eb5bda6e3d5d780e8073b9e15285e9
             {form.image ? (
               <Image
                 source={{ uri: form.image.uri }}
@@ -113,20 +110,32 @@ const Create = () => {
                 className="w-full h-64 rounded-2xl mb-7"
               />
             ) : (
-              <View className="w-full h-40 px-4 bg-black-100 rounded-2xl border border-black-200 flex justify-center items-center">
-                <View className="w-14 h-14 border border-dashed border-secondary-100 flex justify-center items-center">
-                  <Image
-                    source={icons.upload}
-                    resizeMode="contain"
-                    alt="upload"
-                    className="w-1/2 h-1/2"
-                  />
-                </View>
+              <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 flex justify-center items-center flex-row space-x-2">
+                <Image
+                  source={icons.upload}
+                  resizeMode="contain"
+                  alt="upload"
+                  className="w-5 h-5"
+                />
+                <Text className="text-sm text-gray-100 font-pmedium">
+                  Choose a file
+                </Text>
               </View>
             )}
           </TouchableOpacity>
         </View>
 
+<<<<<<< HEAD
+=======
+        <FormField
+          title="AI Prompt"
+          value={form.prompt}
+          placeholder="The AI prompt of your image...."
+          handleChangeText={(e) => setForm({ ...form, prompt: e })}
+          otherStyles="mt-7"
+        />
+
+>>>>>>> 56d193f716eb5bda6e3d5d780e8073b9e15285e9
         <CustomButton
           title="Submit & Publish"
           handlePress={submit}
