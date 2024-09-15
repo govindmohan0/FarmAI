@@ -10,7 +10,6 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
   const { setUser, setIsLogged } = useGlobalContext();
-
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -21,6 +20,7 @@ const SignUp = () => {
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
+      return;
     }
 
     setSubmitting(true);
@@ -28,7 +28,6 @@ const SignUp = () => {
       const result = await createUser(form.email, form.password, form.username);
       setUser(result);
       setIsLogged(true);
-
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
@@ -38,61 +37,123 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <ScrollView>
+    <SafeAreaView style={{ backgroundColor: '#F6F7F9', height: '100%' }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View
-          className="w-full flex justify-center h-full px-4 my-6"
           style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 16,
+            paddingVertical: 30,
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
           <Image
-            source={images.logo}
+            source={images.logo} // Assuming logo is set in constants
             resizeMode="contain"
-            className="w-[115px] h-[34px]"
+            style={{ width: 150, height: 150, marginBottom: 20 }}
           />
 
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Sign Up to FarmVerse
+          <Text style={{
+            fontSize: 26,
+            fontWeight: '600',
+            color: '#333',
+            marginBottom: 10,
+          }}>
+            FarmAI
+          </Text>
+          <Text style={{
+            fontSize: 16,
+            color: '#666',
+            textAlign: 'center',
+            marginBottom: 20,
+          }}>
+            Create your account to get started
           </Text>
 
           <FormField
             title="Username"
             value={form.username}
             handleChangeText={(e) => setForm({ ...form, username: e })}
-            otherStyles="mt-10"
+            otherStyles={{
+              marginTop: 20,
+              borderRadius: 50,
+              backgroundColor: '#FFF',
+              padding: 15,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              width: '100%',
+            }}
+            placeholder="Username"
+            inputStyle={{
+              color: '#333',
+            }}
           />
 
           <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
+            otherStyles={{
+              marginTop: 20,
+              borderRadius: 50,
+              backgroundColor: '#FFF',
+              padding: 15,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              width: '100%',
+            }}
             keyboardType="email-address"
+            placeholder="Email"
+            inputStyle={{
+              color: '#333',
+            }}
           />
 
           <FormField
             title="Password"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
+            otherStyles={{
+              marginTop: 20,
+              borderRadius: 50,
+              backgroundColor: '#FFF',
+              padding: 15,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              width: '100%',
+            }}
+            placeholder="Password"
+            secureTextEntry
+            inputStyle={{
+              color: '#333',
+            }}
           />
 
           <CustomButton
             title="Sign Up"
             handlePress={submit}
-            containerStyles="mt-7"
+            containerStyles={{
+              marginTop: 30,
+              backgroundColor: '#FECACA', // Soft red/pink color for button
+              paddingVertical: 15,
+              borderRadius: 50,
+              width: '100%',
+            }}
+            textStyles={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: '#fff',
+              textAlign: 'center',
+            }}
             isLoading={isSubmitting}
           />
 
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+            <Text style={{ fontSize: 14, color: '#999' }}>
               Have an account already?
             </Text>
-            <Link
-              href="/sign-in"
-              className="text-lg font-psemibold text-secondary"
-            >
+            <Link href="/sign-in" style={{ fontSize: 14, fontWeight: '600', color: '#F87171', marginLeft: 5 }}>
               Login
             </Link>
           </View>

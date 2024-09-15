@@ -46,54 +46,104 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <ScrollView>
+    <SafeAreaView style={{ backgroundColor: '#F6F7F9', height: '100%' }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View
-          className="w-full flex justify-center h-full px-4 my-6"
           style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 16,
+            paddingVertical: 30,
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
           <Image
-            source={images.logo}
+            source={images.logo} // Assuming logo is set in constants
             resizeMode="contain"
-            className="w-[115px] h-[34px]"
+            style={{ width: 150, height: 150, marginBottom: 20 }}
           />
 
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to FarmVerse
+          <Text style={{
+            fontSize: 26,
+            fontWeight: '600',
+            color: '#333',
+            marginBottom: 10,
+          }}>
+            FarmAI
+          </Text>
+          <Text style={{
+            fontSize: 16,
+            color: '#666',
+            textAlign: 'center',
+            marginBottom: 20,
+          }}>
+            Optimize farming practices with AI assistance
           </Text>
 
           <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
+            otherStyles={{
+              marginTop: 20,
+              borderRadius: 50,
+              backgroundColor: '#FFF',
+              padding: 15,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              width: '100%',
+            }}
             keyboardType="email-address"
+            placeholder="Email"
+            inputStyle={{
+              color: '#333',
+            }}
           />
 
           <FormField
             title="Password"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
+            otherStyles={{
+              marginTop: 20,
+              borderRadius: 50,
+              backgroundColor: '#FFF',
+              padding: 15,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              width: '100%',
+            }}
+            placeholder="Password"
+            inputStyle={{
+              color: '#333',
+            }}
+            secureTextEntry
           />
 
           <CustomButton
             title="Sign In"
             handlePress={submit}
-            containerStyles="mt-7"
+            containerStyles={{
+              marginTop: 30,
+              backgroundColor: '#F87171', // Soft red/pink color for button
+              paddingVertical: 15,
+              borderRadius: 50,
+              width: '100%',
+           }}
+            textStyles={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: '#fff',
+              textAlign: 'center',
+            }}
             isLoading={isSubmitting}
           />
 
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+            <Text style={{ fontSize: 14, color: '#999' }}>
               Don't have an account?
             </Text>
-            <Link
-              href="/sign-up"
-              className="text-lg font-psemibold text-secondary"
-            >
+            <Link href="/sign-up" style={{ fontSize: 14, fontWeight: '600', color: '#F87171', marginLeft: 5 }}>
               Signup
             </Link>
           </View>
