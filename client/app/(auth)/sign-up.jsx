@@ -37,7 +37,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#F6F7F9', height: '100%' }}>
+    <SafeAreaView style={{ backgroundColor: '#ffff', height: '100%' }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View
           style={{
@@ -49,7 +49,7 @@ const SignUp = () => {
           }}
         >
           <Image
-            source={images.logo} // Assuming logo is set in constants
+            source={require("../../assets/farmer.webp")} // Assuming logo is set in constants
             resizeMode="contain"
             style={{ width: 150, height: 150, marginBottom: 20 }}
           />
@@ -135,7 +135,7 @@ const SignUp = () => {
             handlePress={submit}
             containerStyles={{
               marginTop: 30,
-              backgroundColor: '#FECACA', // Soft red/pink color for button
+              backgroundColor: '#298b71', // Soft red/pink color for button
               paddingVertical: 15,
               borderRadius: 50,
               width: '100%',

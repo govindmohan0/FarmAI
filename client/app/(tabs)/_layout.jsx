@@ -91,6 +91,24 @@ const TabLayout = () => {
             ),
           }}
         />
+
+<Tabs.Screen
+          name="Education"
+          options={{
+            title: "Education",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.play}
+                color={color}
+                name="Education"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+
+
         <Tabs.Screen
           name="profile"
           options={{
