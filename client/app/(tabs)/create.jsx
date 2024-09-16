@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,11 +10,17 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import { translation } from "../../components/utils"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 
 import { icons } from "../../constants";
 import { createImagePost } from "../../lib/appwrite";
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
+
+
 
 const Create = () => {
   const { user } = useGlobalContext();
@@ -24,6 +30,9 @@ const Create = () => {
     image: null,
     prompt: "",
   });
+
+
+  
 
   // Request permissions for the Image Picker
   const requestPermission = async () => {
@@ -53,6 +62,15 @@ const Create = () => {
     } else {
       Alert.alert("No image selected");
     }
+  };
+
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+  const getLang = async () => {
+    setSelectedLang(parseInt(await AsyncStorage.getItem("LANG")));
   };
 
   const submit = async () => {
@@ -86,14 +104,44 @@ const Create = () => {
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView className="px-4 my-6">
-        <Text className="text-2xl text-black font-psemibold mb-6">Upload Image</Text>
+        <Text className="text-2xl text-black font-psemibold mb-6">{selectedLang == 0
+                      ? translation[1].English
+                      : selectedLang == 1
+                      ? translation[1].Tamil
+                      : selectedLang == 2
+                      ? translation[1].Hindi
+                      : selectedLang == 3
+                      ? translation[1].Punjabi
+                      : selectedLang == 4
+                      ? translation[1].Urdu
+                      : null}</Text>
         <FormField
 
         
-  title="Image Title"
+  title={selectedLang == 0
+    ? translation[4].English
+    : selectedLang == 1
+    ? translation[4].Tamil
+    : selectedLang == 2
+    ? translation[4].Hindi
+    : selectedLang == 3
+    ? translation[4].Punjabi
+    : selectedLang == 4
+    ? translation[4].Urdu
+    : null}
   className="text-black"  // This will be displayed in black
   value={form.title}
-  placeholder="Give your image a catchy title..."
+  placeholder={selectedLang == 0
+    ? translation[5].English
+    : selectedLang == 1
+    ? translation[5].Tamil
+    : selectedLang == 2
+    ? translation[5].Hindi
+    : selectedLang == 3
+    ? translation[5].Punjabi
+    : selectedLang == 4
+    ? translation[5].Urdu
+    : null}
   handleChangeText={(e) => setForm({ ...form, title: e })}
   otherStyles={{ marginTop: 10 }}
   color="black"  // Ensure the title text color is black
@@ -102,7 +150,17 @@ const Create = () => {
 
         <View className="mt-7 space-y-2">
           <Text className="text-base text-black font-pmedium">
-            Upload Image
+          {selectedLang == 0
+                      ? translation[1].English
+                      : selectedLang == 1
+                      ? translation[1].Tamil
+                      : selectedLang == 2
+                      ? translation[1].Hindi
+                      : selectedLang == 3
+                      ? translation[1].Punjabi
+                      : selectedLang == 4
+                      ? translation[1].Urdu
+                      : null}
           </Text>
 
           <TouchableOpacity onPress={openPicker} >
@@ -128,7 +186,17 @@ const Create = () => {
         </View>
 
         <CustomButton
-          title="Submit & Publish"
+          title={selectedLang == 0
+            ? translation[6].English
+            : selectedLang == 1
+            ? translation[6].Tamil
+            : selectedLang == 2
+            ? translation[6].Hindi
+            : selectedLang == 3
+            ? translation[6].Punjabi
+            : selectedLang == 4
+            ? translation[6].Urdu
+            : null}
           handlePress={submit}
           containerStyles="mt-7"
           isLoading={uploading}

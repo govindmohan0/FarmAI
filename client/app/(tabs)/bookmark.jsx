@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
+import { translation } from "../../components/utils"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 
 const Bookmark = () => {
   const [image, setImage] = useState(null);
@@ -9,9 +13,21 @@ const Bookmark = () => {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
+
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+  const getLang = async () => {
+    setSelectedLang(parseInt(await AsyncStorage.getItem("LANG")));
+  };
+
   // Function to pick an image from the gallery
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    
 
     if (permissionResult.granted === false) {
       alert("Permission to access gallery is required!");
@@ -75,7 +91,17 @@ const Bookmark = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white px-4 py-6">
-      <Text className="text-3xl font-semibold text-black mb-6">Upload Image</Text>
+      <Text className="text-3xl font-semibold text-black mb-6">{selectedLang == 0
+                      ? translation[1].English
+                      : selectedLang == 1
+                      ? translation[1].Tamil
+                      : selectedLang == 2
+                      ? translation[1].Hindi
+                      : selectedLang == 3
+                      ? translation[1].Punjabi
+                      : selectedLang == 4
+                      ? translation[1].Urdu
+                      : null}</Text>
 
       {/* Image Upload Section */}
       <TouchableOpacity
@@ -86,7 +112,17 @@ const Bookmark = () => {
           <Image source={{ uri: image }} className="w-full h-full rounded-lg object-cover" />
         ) : (
           <View className="flex items-center justify-center">
-            <Text className="text-gray-400">Click to upload</Text>
+            <Text className="text-gray-400">{selectedLang == 0
+                      ? translation[2].English
+                      : selectedLang == 1
+                      ? translation[2].Tamil
+                      : selectedLang == 2
+                      ? translation[2].Hindi
+                      : selectedLang == 3
+                      ? translation[2].Punjabi
+                      : selectedLang == 4
+                      ? translation[2].Urdu
+                      : null}</Text>
           </View>
         )}
       </TouchableOpacity>

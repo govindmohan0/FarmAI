@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, ScrollView, ProgressBarAndroid, Linking } from 'react-native';
+import { translation } from "../../components/utils"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const fertilizers = [
   { id: '1', name: 'Nitrogen Fertilizer', description: 'Boosts plant growth.' },
@@ -19,7 +22,16 @@ const posts = [
   { id: '3', title: 'Maximizing Water Efficiency in Farming', postUrl: 'https://hindi.krishijagran.com/machinery/powertrac-euro-47-price-india-lowest-fuel-consuming-tractor/' },
 ];
 
+
 const Education = () => {
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+  const getLang = async () => {
+    setSelectedLang(parseInt(await AsyncStorage.getItem("LANG")));
+  };
   const [selectedTab, setSelectedTab] = useState('Overview');
 
   const handleVideoPress = (videoUrl) => {
@@ -95,13 +107,33 @@ const Education = () => {
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hello, Farmer</Text>
+        <Text style={styles.greeting}>{selectedLang == 0
+            ? translation[7].English
+            : selectedLang == 1
+            ? translation[7].Tamil
+            : selectedLang == 2
+            ? translation[7].Hindi
+            : selectedLang == 3
+            ? translation[7].Punjabi
+            : selectedLang == 4
+            ? translation[7].Urdu
+            : null}</Text>
         <View style={styles.tabs}>
           <TouchableOpacity
             style={[styles.tabButton, selectedTab === 'Overview' && styles.activeTab]}
             onPress={() => setSelectedTab('Overview')}
           >
-            <Text style={[styles.tabText, selectedTab === 'Overview' && styles.activeTabText]}>Overview</Text>
+            <Text style={[styles.tabText, selectedTab === 'Overview' && styles.activeTabText]}>{selectedLang == 0
+            ? translation[7].English
+            : selectedLang == 1
+            ? translation[7].Tamil
+            : selectedLang == 2
+            ? translation[7].Hindi
+            : selectedLang == 3
+            ? translation[7].Punjabi
+            : selectedLang == 4
+            ? translation[7].Urdu
+            : null}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.tabButton, selectedTab === 'Productivity' && styles.activeTab]}
