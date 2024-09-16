@@ -1,1 +1,1 @@
-# web-dev-prectice
+# FarmAI
