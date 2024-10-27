@@ -31,23 +31,20 @@ const Welcome = () => {
         }}
       >
         <View className="mb-20 w-full flex justify-center items-center h-full px-4">
-
-          
           {/* Correct Image Usage */}
           <Image
-            source={require("C:/Users/hkanv/Documents/GitHub/web-dev-prectice/client/assets/asdssa.jpg")} // Update the image path accordingly
+            source={images.logo}
             className="w-full h-[300px]"
             resizeMode="contain"
-            
           />
- <View className="mt-20 w-full">
-          <CustomButton
-            title="Get started"
-            handlePress={() => router.push("/sign-in")}
-            containerStyles="w-full bg-black p-4 rounded-full "
-            textStyles="text-white text-lg font-bold"
-          />
-        </View>
+          <View className="mt-20 w-full">
+            <CustomButton
+              title="Get started"
+              handlePress={() => router.push("/sign-in")}
+              containerStyles="w-full bg-black p-4 rounded-full "
+              textStyles="text-white text-lg font-bold"
+            />
+          </View>
         </View>
       </ScrollView>
 
