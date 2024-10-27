@@ -1,1 +1,1 @@
-# FarmAI
+# Krishi-Yog
