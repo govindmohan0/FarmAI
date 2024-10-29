@@ -13,8 +13,6 @@ import { translation } from "../../components/utils"
 import { Pressable } from "react-native";
 import LanguageModal from "../../components/LanguageModal";
 
-//import Weather from "../../components/Weather"; // Import Weather component
-
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
@@ -64,8 +62,8 @@ const Home = () => {
                       ? translation[0].Urdu
                       : null}
                 </Text>
-                <Text className="px-2 text-4xl font-psemibold mt-2 text-black">
-                  FarmAi
+                <Text className="px-2 text-3xl font-psemibold mt-2 text-black">
+                Krishi Yog
                 </Text>
               </View>
               <View className="mt-1.5">
