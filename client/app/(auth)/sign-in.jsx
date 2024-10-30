@@ -69,7 +69,7 @@ const SignIn = () => {
             color: '#333',
             marginBottom: 10,
           }}>
-            FarmAI
+            Krishi Yog
           </Text>
           <Text style={{
             fontSize: 16,
